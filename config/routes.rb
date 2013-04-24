@@ -1,6 +1,7 @@
 Loanstar::Application.routes.draw do
-  get "api/ping"
-  get "user/create"
+  scope "/api" do
+    get "user/create"
+  end
 
   root :to => "api#ping"
 
