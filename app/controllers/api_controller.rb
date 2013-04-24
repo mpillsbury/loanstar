@@ -2,7 +2,7 @@ class ApiController < ApplicationController
   def ping
     render json: {
       status: "success",
-      message: "wtf"
+      message: "hello world"
     }
   end
 
