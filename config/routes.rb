@@ -1,9 +1,17 @@
 Loanstar::Application.routes.draw do
   scope "/api" do
-    get "user/create"
+    match "/user/create" => "user#create"
+    match "/items" => "item#index"
+    match "/item/create" => "item#create"
+    match "/item/update" => "item#update"
+    match "/item/delete" => "item#delete"
+    match "/user/items" => "item#index_by_user"
+    match "/user/requests" => "item#requests_by_user"
+    match "/user/borrows" => "item#borrows_by_user"
   end
 
   get "api/ping"
+  get "api/login"
 
   root :to => "api#ping"
 
