@@ -1,4 +1,9 @@
 Loanstar::Application.routes.draw do
+  get "api/ping"
+  get "user/create"
+
+  root :to => "api#ping"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
