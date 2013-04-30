@@ -5,4 +5,8 @@ class Borrow < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :item
+
+  def self.delete_old_borrows(date = Date.today)
+    Borrow.destroy_all("end_date < '#{date.to_s}'")
+  end
 end
