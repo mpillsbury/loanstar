@@ -22,5 +22,4 @@ class BorrowController < ApplicationController
       in: params
     }
   end
-
 end

@@ -1,10 +1,8 @@
 class ItemController < ApplicationController
-  LIST = ["item_1", "item_2", "item_3"]
   def index
     render json: {
       status: "success",
-      itemList: LIST,
-      in: params
+      itemList: json_items(Item.where("user_id != #{params[:userId]}"))
     }
   end
 
@@ -94,13 +92,13 @@ class ItemController < ApplicationController
   end
 
   def index_by_user
-    @user_id = params[:userId]
     render json: {
       status: "success",
-      itemList: LIST,
-      in: params
+      itemList: json_items(Item.where(user_id: params[:userId]))
     }
   end
+
+  LIST = ["item_1", "item_2", "item_3"]
 
   def requests_by_user
     @user_id = params[:userId]
@@ -124,4 +122,12 @@ class ItemController < ApplicationController
     }
   end
 
+  private
+
+  def json_items(items)
+    items.map do |item|
+      item.as_json(root: false,
+                   except: [:created_at, :updated_at])
+    end
+  end
 end

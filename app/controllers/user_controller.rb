@@ -8,7 +8,7 @@ class UserController < ApplicationController
       user.reload
       render json: {
         status: "success",
-        userId: "user_id"
+        userId: user.id
       }
     else
       render json: {

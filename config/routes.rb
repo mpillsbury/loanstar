@@ -7,7 +7,7 @@ Loanstar::Application.routes.draw do
     match "/item/create" => "item#create"
     match "/item/update" => "item#update"
     match "/item/delete" => "item#delete"
-    match "/user/items" => "item#index_by_user"
+    match "/items/owned" => "item#index_by_user"
     match "/user/requests" => "item#requests_by_user"
     match "/user/borrows" => "item#borrows_by_user"
     match "/borrow/create" => "borrow#create"
