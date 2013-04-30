@@ -1,5 +1,7 @@
 Loanstar::Application.routes.draw do
 
+  resources :borrows
+
   scope "/api" do
     match "/user/create" => "user#create"
     match "/user/login" => "user#login"

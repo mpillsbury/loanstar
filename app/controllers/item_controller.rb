@@ -11,6 +11,7 @@ class ItemController < ApplicationController
     item.title = params[:title]
     item.year = params[:year]
     item.format = params[:year]
+    item.user_id = params[:userId]
     if params[:picture]
       picture = Picture.new
       picture.image = params[:picture]
@@ -18,7 +19,6 @@ class ItemController < ApplicationController
         item.picture = picture
       end
     end
-    item.user_id = params[:userId]
     if item.save
       item.reload
       render json: {

@@ -5,4 +5,5 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   has_one :picture, dependent: :destroy
+  has_many :borrows, dependent: :destroy
 end

@@ -1,25 +1,54 @@
 class BorrowController < ApplicationController
   def create
-    @request_date = params[:requestDate]
-    @item_id = params[:itemId]
-    @user_id = params[:userId]
-    @status = params[:status]
-    render json: {
-      status: "success",
-      borrowId: "borrow_id",
-      in: params
-    }
+    borrow = Borrow.new
+    borrow.request_date = params[:requestDate]
+    borrow.item_id = params[:itemId]
+    borrow.user_id = params[:userId]
+    borrow.status = params[:status]
+    if borrow.save
+      borrow.reload
+      render json: {
+        status: "success",
+        borrowId: borrow.id
+      }
+    else
+      render json: {
+        status: "failure",
+        message: "#{borrow.errors.first[0]} #{borrow.errors.first[1]}"
+      }
+    end
   end
 
   def update
-    @id = params[:borrowId]
-    @start_date = params[:startDate]
-    @end_date = params[:endDate]
-    @status = params[:status]
-    render json: {
-      status: "success",
-      borrowId: "borrow_id",
-      in: params
-    }
+    if !(borrow = Borrow.find_by_id(params[:borrowId]))
+      error = "borrow not found"
+    else
+      if params[:borrowId]
+        borrow.id = params[:borrowId]
+      end
+      if params[:startDate]
+        borrow.start_date = params[:startDate]
+      end
+      if params[:endDate]
+        borrow.end_date = params[:endDate]
+      end
+      if params[:status]
+        borrow.status = params[:status]
+      end
+      unless borrow.save
+        error = "#{borrow.errors.first[0]} #{borrow.errors.first[1]}"
+      end
+    end
+    unless error
+      render json: {
+        status: "success",
+        borrowId: borrow.id
+      }
+    else
+      render json: {
+        status: "failure",
+        message: error
+      }
+    end
   end
 end
