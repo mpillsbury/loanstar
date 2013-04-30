@@ -9,16 +9,31 @@ class ItemController < ApplicationController
   end
 
   def create
-    @title = params[:title]
-    @year = params[:year]
-    @format = params[:year]
-    @picture = params[:picture]
-    @user_id = params[:userId]
-    render json: {
-      status: "success",
-      itemId: "item_id",
-      in: params
-    }
+    item = Item.new
+    item.title = params[:title]
+    item.year = params[:year]
+    item.format = params[:year]
+    # do something with the picture
+    if params[:picture]
+      picture = Picture.new
+      picture.image = params[:picture]
+      if picture.save
+        item.picture = picture
+      end
+    end
+    item.user_id = params[:userId]
+    if item.save
+      item.reload
+      render json: {
+        status: "success",
+        itemId: item.id
+      }
+    else
+      render json: {
+        status: "failure",
+        message: "#{item.errors.first[0]} #{item.errors.first[1]}"
+      }
+    end
   end
 
   def update

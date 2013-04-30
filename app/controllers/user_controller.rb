@@ -5,6 +5,7 @@ class UserController < ApplicationController
     user.password = params[:hashedPassword]
     user.display_name = params[:displayName]
     if user.save
+      user.reload
       render json: {
         status: "success",
         userId: "user_id"

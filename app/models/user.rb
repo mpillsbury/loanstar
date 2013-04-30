@@ -3,4 +3,6 @@ class User < ActiveRecord::Base
 
   validates :email, :password, :display_name, presence: true
   validates_uniqueness_of :email, :display_name
+
+  has_many :items, dependent: :destroy
 end
