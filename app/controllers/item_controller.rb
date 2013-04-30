@@ -13,7 +13,6 @@ class ItemController < ApplicationController
     item.title = params[:title]
     item.year = params[:year]
     item.format = params[:year]
-    # do something with the picture
     if params[:picture]
       picture = Picture.new
       picture.image = params[:picture]
@@ -37,16 +36,43 @@ class ItemController < ApplicationController
   end
 
   def update
-    @title = params[:title]
-    @year = params[:year]
-    @format = params[:year]
-    @picture = params[:picture]
-    @item_id = params[:itemId]
-    render json: {
-      status: "success",
-      userId: "user_id",
-      in: params
-    }
+    if !(item = Item.find_by_id(params[:itemId]))
+      error = "item not found"
+    else
+      if params[:title]
+        item.title = params[:title]
+      end
+      if params[:year]
+        item.year = params[:year]
+      end
+      if params[:format]
+        item.format = params[:year]
+      end
+      if params[:picture]
+        item.picture.destroy
+        picture = Picture.new
+        picture.image = params[:picture]
+        if picture.save
+          item.picture = picture
+        end
+      elsif item.picture
+        item.picture.destroy
+      end
+      unless item.save
+        error = "#{item.errors.first[0]} #{item.errors.first[1]}"
+      end
+    end
+    unless error
+      render json: {
+        status: "success",
+        itemId: item.id
+      }
+    else
+      render json: {
+        status: "failure",
+        message: error
+      }
+    end
   end
 
   def delete
