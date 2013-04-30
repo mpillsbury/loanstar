@@ -76,11 +76,21 @@ class ItemController < ApplicationController
   end
 
   def delete
-    @item_id = params[:itemId]
-    render json: {
-      status: "success",
-      in: params
-    }
+    if !(item = Item.find_by_id(params[:itemId]))
+      error = "item not found"
+    elsif item.destroy.nil?
+      error = "delete failed"
+    end
+    unless error
+      render json: {
+        status: "success"
+      }
+    else
+      render json: {
+        status: "failure",
+        message: error
+      }
+    end
   end
 
   def index_by_user
