@@ -5,14 +5,4 @@ class ApiController < ApplicationController
       message: "hello world"
     }
   end
-
-  def login
-    @email = params[:email]
-    @hashed_password = params[:hashedPassword]
-    render json: {
-      status: "success",
-      userId: "user_id",
-      in: params
-    }
-  end
 end

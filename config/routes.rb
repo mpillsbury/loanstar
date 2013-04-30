@@ -4,6 +4,7 @@ Loanstar::Application.routes.draw do
 
   scope "/api" do
     match "/user/create" => "user#create"
+    match "/user/login" => "user#login"
     match "/items" => "item#index"
     match "/item/create" => "item#create"
     match "/item/update" => "item#update"
@@ -16,7 +17,6 @@ Loanstar::Application.routes.draw do
   end
 
   get "api/ping"
-  get "api/login"
 
   root :to => "api#ping"
 

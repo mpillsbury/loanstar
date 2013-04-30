@@ -16,4 +16,26 @@ class UserController < ApplicationController
       }
     end
   end
+
+  def login
+    email = params[:email]
+    password = params[:hashedPassword]
+    if !(user = User.find_by_email(email))
+      error = "user not found"
+    elsif user.password != password
+      error = "incorrect password"
+    end
+    unless error
+      render json: {
+        status: "success",
+        userId: user.id,
+        displayName: user.display_name
+      }
+    else
+      render json: {
+        status: "failure",
+        message: error
+      }
+    end
+  end
 end
