@@ -17,7 +17,9 @@ class BorrowController < ApplicationController
   end
 
   def update
-    if !(borrow = Borrow.find_by_id(params[:borrowId]))
+    if !params[:borrowId]
+      error = "borrow_id can't be blank"
+    elsif !(borrow = Borrow.find_by_id(params[:borrowId]))
       error = "borrow not found"
     else
       if params[:borrowId]

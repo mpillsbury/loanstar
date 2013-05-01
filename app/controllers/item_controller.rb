@@ -31,7 +31,9 @@ class ItemController < ApplicationController
   end
 
   def update
-    if !(item = Item.find_by_id(params[:itemId]))
+    if !params[:itemId]
+      error = "item_id can't be blank"
+    elsif !(item = Item.find_by_id(params[:itemId]))
       error = "item not found"
     else
       if params[:title]
@@ -68,7 +70,9 @@ class ItemController < ApplicationController
   end
 
   def delete
-    if !(item = Item.find_by_id(params[:itemId]))
+    if !params[:itemId]
+      error = "item_id can't be blank"
+    elsif !(item = Item.find_by_id(params[:itemId]))
       error = "item not found"
     elsif item.destroy.nil?
       error = "delete failed"

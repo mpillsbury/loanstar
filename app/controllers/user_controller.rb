@@ -18,7 +18,9 @@ class UserController < ApplicationController
   def login
     email = params[:email]
     password = params[:hashedPassword]
-    if !(user = User.find_by_email(email))
+    if !params[:email]
+      error = "email can't be blank"
+    elsif !(user = User.find_by_email(email))
       error = "user not found"
     elsif user.password != password
       error = "incorrect password"
