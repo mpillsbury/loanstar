@@ -7,10 +7,9 @@ class ItemController < ApplicationController
   end
 
   def create
-    item = Item.new
-    item.title = params[:title]
-    item.year = params[:year]
-    item.format = params[:year]
+    item = Item.new title: params[:title],
+                    year: params[:year],
+                    format: params[:year]
     item.user_id = params[:userId]
     if params[:picture]
       picture = Picture.new

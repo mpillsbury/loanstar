@@ -1,9 +1,8 @@
 class UserController < ApplicationController
   def create
-    user = User.new
-    user.email = params[:email]
-    user.password = params[:hashedPassword]
-    user.display_name = params[:displayName]
+    user = User.new email: params[:email],
+                    password: params[:hashedPassword],
+                    display_name: params[:displayName]
     if user.save
       user.reload
       render json: {
