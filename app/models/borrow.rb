@@ -9,8 +9,8 @@ class Borrow < ActiveRecord::Base
   def as_json options = {}
     {
       borrowId: id,
-      requestDate: request_date,
-      startDate: start_date,
+      requestDate: (request_date.to_time.to_i if request_date),
+      startDate: (start_date.to_time.to_i if start_date),
       userAccount: user
     }
   end

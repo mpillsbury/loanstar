@@ -13,7 +13,7 @@ class Item < ActiveRecord::Base
       title: title,
       year: year,
       format: format,
-      userId: user_id,
+      userAccount: user,
       borrows: borrows
     }
   end

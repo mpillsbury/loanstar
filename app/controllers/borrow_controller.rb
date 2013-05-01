@@ -1,6 +1,6 @@
 class BorrowController < ApplicationController
   def create
-    borrow = Borrow.new request_date: params[:requestDate]
+    borrow = Borrow.new request_date: Time.at(params[:requestDate]).to_datetime
     borrow.item_id = params[:itemId]
     borrow.user_id = params[:userId]
     if borrow.save
@@ -21,7 +21,7 @@ class BorrowController < ApplicationController
       error = "borrow not found"
     else
       if params[:startDate]
-        borrow.start_date = params[:startDate]
+        borrow.start_date = Time.at(params[:startDate]).to_datetime
       end
       unless borrow.save
         error = "#{borrow.errors.first[0]} #{borrow.errors.first[1]}"
