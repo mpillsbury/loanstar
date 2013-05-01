@@ -3,7 +3,7 @@ class ItemController < ApplicationController
     if params[:userId]
       render json: {
         status: "success",
-        itemList: json_items(Item.where "user_id != #{params[:userId]}")
+        itemList: Item.where("user_id != #{params[:userId]}")
       }
     else
       failure "user_id can't be blank"
@@ -92,41 +92,49 @@ class ItemController < ApplicationController
   def index_by_user
     render json: {
       status: "success",
-      itemList: json_items(Item.where user_id: params[:userId])
-    }
-  end
-
-  LIST = ["item_1", "item_2", "item_3"]
-
-  def requests_by_user
-    @user_id = params[:userId]
-    render json: {
-      status: "success",
-      userId: "user_id",
-      itemLists: {
-       requestedByList: LIST,
-       requestedFromList: LIST
-      },
-      in: params
+      itemList: Item.where(user_id: params[:userId])
     }
   end
 
   def borrows_by_user
-    @user_id = params[:userId]
-    render json: {
-      status: "success",
-      itemList: LIST,
-      in: params
-    }
+    if !params[:userId]
+      error = "user_id can't be blank"
+    else
+      borrows = Borrow.where(user_id: params[:userId])
+                      .where("start_date IS NOT NULL")
+                      .includes(:item)
+      items = borrows.map{|borrow| borrow.item}.uniq
+    end
+    unless error
+      render json: {
+        status: "success",
+        itemList: items
+      }
+    else
+      failure error
+    end
   end
 
-  private
-
-  def json_items items
-    items.map do |item|
-      item.as_json root: false,
-                   except: [:created_at, :updated_at],
-                   include: :borrows
+  def requests_by_user
+    if !params[:userId]
+      error = "user_id can't be blank"
+    else
+      requests_by = Borrow.where(user_id: params[:userId])
+                          .where("start_date IS NULL")
+                          .includes(:item)
+      requests_by_items = requests_by.map{|borrow| borrow.item}.uniq
+      requests_for_items = Item.joins(:borrows)
+                               .where("items.user_id" => params[:userId])
+                               .where("borrows.start_date IS NULL")
+    end
+    unless error
+      render json: {
+        status: "success",
+        requestsByList: requests_by_items,
+        requestsForList: requests_for_items
+      }
+    else
+      failure error
     end
   end
 end

@@ -5,4 +5,13 @@ class Borrow < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :item
+
+  def as_json options = {}
+    {
+      borrowId: id,
+      requestDate: request_date,
+      startDate: start_date,
+      userAccount: user
+    }
+  end
 end

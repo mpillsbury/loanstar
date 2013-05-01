@@ -6,4 +6,14 @@ class User < ActiveRecord::Base
 
   has_many :items, dependent: :destroy
   has_many :borrows, dependent: :destroy
+
+  def as_json options = {}
+    {
+      userId: id,
+      email: email,
+      hashedPassword: password,
+      displayName: display_name
+    }
+
+  end
 end

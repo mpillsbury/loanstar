@@ -3,13 +3,15 @@ Loanstar::Application.routes.draw do
   scope "/api" do
     post "/user/create" => "user#create"
     get "/user/login" => "user#login"
+
     get "/items" => "item#index"
     post "/item/create" => "item#create"
     put "/item/update" => "item#update"
     delete "/item/delete" => "item#delete"
     get "/items/owned" => "item#index_by_user"
-    get "/user/requests" => "item#requests_by_user"
-    get "/user/borrows" => "item#borrows_by_user"
+
+    get "/borrows" => "item#borrows_by_user"
+    get "/borrows/requests" => "item#requests_by_user"
     post "/borrow/create" => "borrow#create"
     put "/borrow/update" => "borrow#update"
   end
