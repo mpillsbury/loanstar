@@ -1,9 +1,13 @@
 class ItemController < ApplicationController
   def index
-    render json: {
-      status: "success",
-      itemList: json_items(Item.where("user_id != #{params[:userId]}"))
-    }
+    if params[:userId]
+      render json: {
+        status: "success",
+        itemList: json_items(Item.where "user_id != #{params[:userId]}")
+      }
+    else
+      failure "user_id can't be blank"
+    end
   end
 
   def create
@@ -88,7 +92,7 @@ class ItemController < ApplicationController
   def index_by_user
     render json: {
       status: "success",
-      itemList: json_items(Item.where(user_id: params[:userId]))
+      itemList: json_items(Item.where user_id: params[:userId])
     }
   end
 
@@ -118,10 +122,11 @@ class ItemController < ApplicationController
 
   private
 
-  def json_items(items)
+  def json_items items
     items.map do |item|
-      item.as_json(root: false,
-                   except: [:created_at, :updated_at])
+      item.as_json root: false,
+                   except: [:created_at, :updated_at],
+                   include: :borrows
     end
   end
 end
