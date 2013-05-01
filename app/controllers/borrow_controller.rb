@@ -12,10 +12,7 @@ class BorrowController < ApplicationController
         borrowId: borrow.id
       }
     else
-      render json: {
-        status: "failure",
-        message: "#{borrow.errors.first[0]} #{borrow.errors.first[1]}"
-      }
+      failure "#{borrow.errors.first[0]} #{borrow.errors.first[1]}"
     end
   end
 
@@ -45,10 +42,7 @@ class BorrowController < ApplicationController
         borrowId: borrow.id
       }
     else
-      render json: {
-        status: "failure",
-        message: error
-      }
+      failure error
     end
   end
 end

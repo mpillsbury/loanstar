@@ -11,10 +11,7 @@ class UserController < ApplicationController
         userId: user.id
       }
     else
-      render json: {
-        status: "failure",
-        message: "#{user.errors.first[0]} #{user.errors.first[1]}"
-      }
+      failure "#{user.errors.first[0]} #{user.errors.first[1]}"
     end
   end
 
@@ -33,10 +30,7 @@ class UserController < ApplicationController
         displayName: user.display_name
       }
     else
-      render json: {
-        status: "failure",
-        message: error
-      }
+      failure error
     end
   end
 end

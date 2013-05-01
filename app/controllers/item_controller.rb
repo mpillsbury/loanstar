@@ -26,10 +26,7 @@ class ItemController < ApplicationController
         itemId: item.id
       }
     else
-      render json: {
-        status: "failure",
-        message: "#{item.errors.first[0]} #{item.errors.first[1]}"
-      }
+      failure "#{item.errors.first[0]} #{item.errors.first[1]}"
     end
   end
 
@@ -66,10 +63,7 @@ class ItemController < ApplicationController
         itemId: item.id
       }
     else
-      render json: {
-        status: "failure",
-        message: error
-      }
+      failure error
     end
   end
 
@@ -84,10 +78,7 @@ class ItemController < ApplicationController
         status: "success"
       }
     else
-      render json: {
-        status: "failure",
-        message: error
-      }
+      failure error
     end
   end
 
