@@ -4,7 +4,6 @@ class BorrowController < ApplicationController
     borrow.request_date = params[:requestDate]
     borrow.item_id = params[:itemId]
     borrow.user_id = params[:userId]
-    borrow.status = params[:status]
     if borrow.save
       borrow.reload
       render json: {
@@ -27,12 +26,6 @@ class BorrowController < ApplicationController
       end
       if params[:startDate]
         borrow.start_date = params[:startDate]
-      end
-      if params[:endDate]
-        borrow.end_date = params[:endDate]
-      end
-      if params[:status]
-        borrow.status = params[:status]
       end
       unless borrow.save
         error = "#{borrow.errors.first[0]} #{borrow.errors.first[1]}"

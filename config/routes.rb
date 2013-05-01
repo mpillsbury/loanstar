@@ -1,22 +1,22 @@
 Loanstar::Application.routes.draw do
 
-  resources :borrows
-
   scope "/api" do
-    match "/user/create" => "user#create"
-    match "/user/login" => "user#login"
-    match "/items" => "item#index"
-    match "/item/create" => "item#create"
-    match "/item/update" => "item#update"
-    match "/item/delete" => "item#delete"
-    match "/items/owned" => "item#index_by_user"
-    match "/user/requests" => "item#requests_by_user"
-    match "/user/borrows" => "item#borrows_by_user"
-    match "/borrow/create" => "borrow#create"
-    match "/borrow/update" => "borrow#update"
+    post "/user/create" => "user#create"
+    get "/user/login" => "user#login"
+    get "/items" => "item#index"
+    post "/item/create" => "item#create"
+    put "/item/update" => "item#update"
+    delete "/item/delete" => "item#delete"
+    get "/items/owned" => "item#index_by_user"
+    get "/user/requests" => "item#requests_by_user"
+    get "/user/borrows" => "item#borrows_by_user"
+    post "/borrow/create" => "borrow#create"
+    put "/borrow/update" => "borrow#update"
   end
 
   get "api/ping"
+  delete "api/reset"
+  post "api/reload"
 
   root :to => "api#ping"
 
