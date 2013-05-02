@@ -16,7 +16,7 @@ class ApiController < ApplicationController
 
   def reload
     begin
-      paul = add_user "paul@paulhimes.com", nil, "Paul Himes"
+      paul = add_user "paul@paulhimes.com", 3865561386, "Paul Himes"
       bob = add_user "redusek@gmail.com", nil, "Bob Dusek"
       chad = add_user "chadmlinke@gmail.com", nil, "Chad Linke"
 
