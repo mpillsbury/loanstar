@@ -20,6 +20,8 @@ Loanstar::Application.routes.draw do
   delete "api/reset"
   post "api/reload"
 
+  match "*all" => "application#cors", :constraints => {:method => "OPTIONS"}
+
   root :to => "api#ping"
 
   # The priority is based upon order of creation:
