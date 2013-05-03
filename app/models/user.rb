@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
     {
       userId: id,
       email: email,
-      hashedPassword: password,
       displayName: display_name
     }
 
