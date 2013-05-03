@@ -7,6 +7,7 @@ class Borrow < ActiveRecord::Base
   validates :request_date, :user_id, :item_id, presence: true
 
   after_save :destroy_if_ended
+  after_find :destroy_if_ended  # this is a hack way to clear out old borrows without cron
 
   def as_json options = {}
     {

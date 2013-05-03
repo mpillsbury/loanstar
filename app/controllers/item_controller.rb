@@ -101,7 +101,7 @@ class ItemController < ApplicationController
       error = "user_id can't be blank"
     else
       borrows = Borrow.where(user_id: params[:userId])
-                      .where("start_date IS NOT NULL")
+                      .where("start_date IS NOT NULL AND end_date IS NULL")
                       .includes(:item)
       items = borrows.map{|borrow| borrow.item}.uniq
     end
@@ -120,12 +120,12 @@ class ItemController < ApplicationController
       error = "user_id can't be blank"
     else
       requests_by = Borrow.where(user_id: params[:userId])
-                          .where("start_date IS NULL")
+                          .where("start_date IS NULL AND end_date IS NULL")
                           .includes(:item)
       requests_by_items = requests_by.map{|borrow| borrow.item}.uniq
       requests_for_items = Item.joins(:borrows)
                                .where("items.user_id" => params[:userId])
-                               .where("borrows.start_date IS NULL")
+                               .where("borrows.start_date IS NULL AND borrows.end_date IS NULL")
     end
     unless error
       render json: {
