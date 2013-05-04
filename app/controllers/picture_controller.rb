@@ -1,4 +1,4 @@
-class PicturesController < ApplicationController
+class PictureController < ApplicationController
   def show
     if @picture = Picture.find_by_id(params[:id])
       send_data @picture.image, type: @picture.content_type, disposition: "inline"
