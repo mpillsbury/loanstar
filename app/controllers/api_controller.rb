@@ -20,14 +20,14 @@ class ApiController < ApplicationController
       bob = add_user "redusek@gmail.com", "redusek", "Bob Dusek"
       chad = add_user "chadmlinke@gmail.com", "chadmlinke", "Chad Linke"
 
-      item_1 = add_item "Rudy", 1993, "vhs", bob.id
-      item_2 = add_item "Jurassic Park", 1993, "dvd", bob.id
-      item_3 = add_item "Serenity", 2005, "bluray", bob.id
-      item_4 = add_item "The Terminator", 1984, "vhs", bob.id
-      item_5 = add_item "The Matrix", 1999, "dvd", bob.id
-      item_6 = add_item "The Dark Crystal", 1982, "bluray", paul.id
-      item_7 = add_item "Raiders of the Lost Ark", 1981, "vhs", paul.id
-      item_8 = add_item "Star Wars", 1977, "dvd", paul.id
+      item_1 = add_item "Rudy", 1993, "VHS", bob.id
+      item_2 = add_item "Jurassic Park", 1993, "DVD", bob.id
+      item_3 = add_item "Serenity", 2005, "Blu-ray", bob.id
+      item_4 = add_item "The Terminator", 1984, "VHS", bob.id
+      item_5 = add_item "The Matrix", 1999, "DVD", bob.id
+      item_6 = add_item "The Dark Crystal", 1982, "Blu-ray", paul.id
+      item_7 = add_item "Raiders of the Lost Ark", 1981, "VHS", paul.id
+      item_8 = add_item "Star Wars", 1977, "DVD", paul.id
 
       borrow_2 = add_borrow 2.days.ago, 1.days.ago, item_2.id, chad.id
       borrow_3 = add_borrow 2.days.ago, 1.days.ago, item_3.id, paul.id
