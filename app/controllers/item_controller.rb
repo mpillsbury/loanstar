@@ -15,15 +15,21 @@ class ItemController < ApplicationController
                      year: params[:year],
                      format: params[:format]
     @item.user_id = params[:userId]
-    add_picture
-    if @item.save
-      @item.reload
+    error = add_picture
+    unless error
+      if @item.save
+        @item.reload
+      else
+        error = "#{@item.errors.first[0]} #{@item.errors.first[1]}"
+      end
+    end
+    unless error
       render json: {
         status: "success",
         itemId: @item.id
       }
     else
-      failure "#{@item.errors.first[0]} #{@item.errors.first[1]}"
+      failure error
     end
   end
 
@@ -40,9 +46,11 @@ class ItemController < ApplicationController
         @item.year = params[:year]
       end
       if params[:format]
-        @item.format = params[:year]
+        @item.format = params[:format]
       end
-      add_picture
+      error = add_picture
+    end
+    unless error
       unless @item.save
         error = "#{@item.errors.first[0]} #{@item.errors.first[1]}"
       end
@@ -129,9 +137,14 @@ class ItemController < ApplicationController
     if @item.picture
       @item.picture.destroy
     end
-    if params[:picture] and params[:contentType]
-      @item.build_picture image: ActiveSupport::Base64.decode64(params[:picture]),
-                          content_type: params[:contentType]
+    if params[:picture]
+      if params[:contentType]
+        @item.build_picture image: ActiveSupport::Base64.decode64(params[:picture]),
+                            content_type: params[:contentType]
+      else
+        error = "context_type can't be blank"
+      end
     end
+    error
   end
 end
