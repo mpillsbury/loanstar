@@ -16,6 +16,8 @@ Loanstar::Application.routes.draw do
     put "/borrow/update" => "borrow#update"
   end
 
+  get "/picture/:id" => "picture#show"
+
   get "api/ping"
   delete "api/reset"
   post "api/reload"

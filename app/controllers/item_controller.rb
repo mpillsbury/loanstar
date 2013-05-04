@@ -3,7 +3,7 @@ class ItemController < ApplicationController
     if params[:userId]
       render json: {
         status: "success",
-        itemList: Item.where("user_id != #{params[:userId]}")
+        itemList: Item.where("user_id != '#{params[:userId]}'")
       }
     else
       failure "user_id can't be blank"
@@ -11,61 +11,46 @@ class ItemController < ApplicationController
   end
 
   def create
-    item = Item.new title: params[:title],
-                    year: params[:year],
-                    format: params[:year]
-    item.user_id = params[:userId]
-    if params[:picture]
-      picture = Picture.new
-      picture.image = params[:picture]
-      if picture.save
-        item.picture = picture
-      end
-    end
-    if item.save
-      item.reload
+    @item = Item.new title: params[:title],
+                     year: params[:year],
+                     format: params[:year]
+    @item.user_id = params[:userId]
+    add_picture
+    if @item.save
+      @item.reload
       render json: {
         status: "success",
-        itemId: item.id
+        itemId: @item.id
       }
     else
-      failure "#{item.errors.first[0]} #{item.errors.first[1]}"
+      failure "#{@item.errors.first[0]} #{@item.errors.first[1]}"
     end
   end
 
   def update
     if !params[:itemId]
       error = "item_id can't be blank"
-    elsif !(item = Item.find_by_id(params[:itemId]))
+    elsif !(@item = Item.find_by_id(params[:itemId]))
       error = "item not found"
     else
       if params[:title]
-        item.title = params[:title]
+        @item.title = params[:title]
       end
       if params[:year]
-        item.year = params[:year]
+        @item.year = params[:year]
       end
       if params[:format]
-        item.format = params[:year]
+        @item.format = params[:year]
       end
-      if params[:picture]
-        item.picture.destroy
-        picture = Picture.new
-        picture.image = params[:picture]
-        if picture.save
-          item.picture = picture
-        end
-      elsif item.picture
-        item.picture.destroy
-      end
-      unless item.save
-        error = "#{item.errors.first[0]} #{item.errors.first[1]}"
+      add_picture
+      unless @item.save
+        error = "#{@item.errors.first[0]} #{@item.errors.first[1]}"
       end
     end
     unless error
       render json: {
         status: "success",
-        itemId: item.id
+        itemId: @item.id
       }
     else
       failure error
@@ -135,6 +120,21 @@ class ItemController < ApplicationController
       }
     else
       failure error
+    end
+  end
+
+  private
+
+  def add_picture
+    if @item.picture
+      @item.picture.destroy
+    end
+    if params[:picture] and params[:contentType]
+      picture = Picture.new image: ActiveSupport::Base64.decode64(params[:picture]),
+                            content_type: params[:contentType]
+      if picture.save
+        @item.picture = picture
+      end
     end
   end
 end
