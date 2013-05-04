@@ -10,6 +10,7 @@ class Picture < ActiveRecord::Base
 
   def url
     url_for(host: "primatehouse.com",  # this is certainly the wrong way to do it
+            port: 8086,
             controller: 'picture',
             action: 'show',
             id: id)
