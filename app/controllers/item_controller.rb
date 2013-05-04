@@ -134,7 +134,7 @@ class ItemController < ApplicationController
   private
 
   def add_picture
-    if @item.picture
+    if @item.picture = nil
       @item.picture.destroy
     end
     if params[:picture]

@@ -4,9 +4,9 @@ class Picture < ActiveRecord::Base
 
   attr_accessible :image, :content_type
 
-  validates :item_id, :image, :content_type, presence: true
-
   belongs_to :item
+
+  validates :image, :content_type, presence: true
 
   def url
     url_for(host: "primatehouse.com",  # this is certainly the wrong way to do it
