@@ -13,6 +13,7 @@ class Item < ActiveRecord::Base
       title: title,
       year: year,
       format: format,
+      pictureUrl: picture.try(:url),
       userAccount: user,
       borrows: borrows
     }

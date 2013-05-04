@@ -13,7 +13,7 @@ class ItemController < ApplicationController
   def create
     @item = Item.new title: params[:title],
                      year: params[:year],
-                     format: params[:year]
+                     format: params[:format]
     @item.user_id = params[:userId]
     add_picture
     if @item.save
@@ -130,11 +130,8 @@ class ItemController < ApplicationController
       @item.picture.destroy
     end
     if params[:picture] and params[:contentType]
-      picture = Picture.new image: ActiveSupport::Base64.decode64(params[:picture]),
-                            content_type: params[:contentType]
-      if picture.save
-        @item.picture = picture
-      end
+      @item.build_picture image: ActiveSupport::Base64.decode64(params[:picture]),
+                          content_type: params[:contentType]
     end
   end
 end

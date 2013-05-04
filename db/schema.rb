@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130504040423) do
+ActiveRecord::Schema.define(:version => 20130504050030) do
 
   create_table "borrows", :force => true do |t|
     t.date     "request_date"
@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(:version => 20130504040423) do
     t.datetime "updated_at"
     t.string   "format"
     t.integer  "user_id"
-    t.integer  "picture_id"
   end
 
   create_table "pictures", :force => true do |t|
