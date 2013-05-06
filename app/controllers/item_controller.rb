@@ -10,6 +10,22 @@ class ItemController < ApplicationController
     end
   end
 
+  def show
+    if !params[:itemId]
+      error = "item_id can't be blank"
+    elsif !(@item = Item.find_by_id(params[:itemId]))
+      error = "item not found"
+    end
+    unless error
+      render json: {
+        status: "success",
+        item: @item
+      }
+    else
+      failure error
+    end
+  end
+
   def create
     @item = Item.new title: params[:title],
                      year: params[:year],

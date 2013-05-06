@@ -4,6 +4,7 @@ Loanstar::Application.routes.draw do
     post "/user/create" => "user#create"
     get "/user/login" => "user#login"
 
+    get "/item" => "item#show"
     get "/items" => "item#index"
     post "/item/create" => "item#create"
     put "/item/update" => "item#update"
