@@ -84,14 +84,30 @@ class ItemController < ApplicationController
   def delete
     if !params[:itemId]
       error = "item_id can't be blank"
-    elsif !(item = Item.find_by_id(params[:itemId]))
+    elsif !(@item = Item.find_by_id(params[:itemId]))
       error = "item not found"
-    elsif item.destroy.nil?
+    elsif @item.destroy.nil?
       error = "delete failed"
     end
     unless error
       render json: {
         status: "success"
+      }
+    else
+      failure error
+    end
+  end
+
+  def borrow
+    if !params[:borrowId]
+      error = "borrow_id can't be blank"
+    elsif !(@borrow = Borrow.find_by_id(params[:borrowId]))
+      error = "borrow not found"
+    end
+    unless error
+      render json: {
+        status: "success",
+        item: @borrow.item
       }
     else
       failure error
@@ -109,15 +125,15 @@ class ItemController < ApplicationController
     if !params[:userId]
       error = "user_id can't be blank"
     else
-      borrows = Borrow.where(user_id: params[:userId])
-                      .where("start_date IS NOT NULL AND end_date IS NULL")
-                      .includes(:item)
-      items = borrows.map{|borrow| borrow.item}.uniq
+      @borrows = Borrow.where(user_id: params[:userId])
+                       .where("start_date IS NOT NULL AND end_date IS NULL")
+                       .includes(:item)
+      @items = @borrows.map{|borrow| borrow.item}.uniq
     end
     unless error
       render json: {
         status: "success",
-        itemList: items
+        itemList: @items
       }
     else
       failure error
@@ -128,19 +144,19 @@ class ItemController < ApplicationController
     if !params[:userId]
       error = "user_id can't be blank"
     else
-      requests_by = Borrow.where(user_id: params[:userId])
-                          .where("start_date IS NULL AND end_date IS NULL")
-                          .includes(:item)
-      requests_by_items = requests_by.map{|borrow| borrow.item}.uniq
-      requests_for_items = Item.joins(:borrows)
-                               .where("items.user_id" => params[:userId])
-                               .where("borrows.start_date IS NULL AND borrows.end_date IS NULL")
+      @requests_by = Borrow.where(user_id: params[:userId])
+                           .where("start_date IS NULL AND end_date IS NULL")
+                           .includes(:item)
+      @requests_by_items = @requests_by.map{|borrow| borrow.item}.uniq
+      @requests_for_items = Item.joins(:borrows)
+                                .where("items.user_id" => params[:userId])
+                                .where("borrows.start_date IS NULL AND borrows.end_date IS NULL")
     end
     unless error
       render json: {
         status: "success",
-        requestsByList: requests_by_items,
-        requestsForList: requests_for_items
+        requestsByList: @requests_by_items,
+        requestsForList: @requests_for_items
       }
     else
       failure error

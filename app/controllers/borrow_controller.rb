@@ -1,21 +1,5 @@
 class BorrowController < ApplicationController
 
-  def show
-    if !params[:borrowId]
-      error = "borrow_id can't be blank"
-    elsif !(@borrow = Borrow.find_by_id(params[:borrowId]))
-      error = "borrow not found"
-    end
-    unless error
-      render json: {
-        status: "success",
-        borrow: @borrow
-      }
-    else
-      failure error
-    end
-  end
-
   def create
     @borrow = Borrow.new
     if params[:requestDate]
