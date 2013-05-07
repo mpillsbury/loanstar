@@ -11,10 +11,11 @@ Loanstar::Application.routes.draw do
     delete "/item/delete" => "item#delete"
     get "/items/owned" => "item#index_by_user"
 
-    get "/borrows" => "item#borrows_by_user"
-    get "/borrows/requests" => "item#requests_by_user"
+    get "/borrow" => "borrow#show"
     post "/borrow/create" => "borrow#create"
     put "/borrow/update" => "borrow#update"
+    get "/borrows" => "item#borrows_by_user"
+    get "/borrows/requests" => "item#requests_by_user"
   end
 
   get "/picture/:id" => "picture#show"
