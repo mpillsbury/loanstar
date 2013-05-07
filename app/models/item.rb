@@ -15,7 +15,7 @@ class Item < ActiveRecord::Base
       format: format,
       pictureUrl: picture.try(:url),
       userAccount: user,
-      borrows: borrows
+      borrows: borrows.where(end_date: nil)
     }
   end
 end
