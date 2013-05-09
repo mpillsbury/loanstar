@@ -4,6 +4,7 @@ class ItemController < ApplicationController
       render json: {
         status: "success",
         itemList: Item.where("user_id != '#{params[:userId]}'")
+                      .order(:title)
       }
     else
       failure "user_id can't be blank"
