@@ -150,7 +150,7 @@ class ItemController < ApplicationController
       @requests_by_items = @requests_by.map{|borrow| borrow.item}.uniq
       @requests_for_items = Item.joins(:borrows)
                                 .where("items.user_id" => params[:userId])
-                                .where("borrows.start_date IS NULL AND borrows.end_date IS NULL")
+                                .where("borrows.start_date IS NULL AND borrows.end_date IS NULL").uniq
     end
     unless error
       render json: {
